@@ -1,25 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+  // src/App.js
+  import React from 'react';
+  import { BrowserRouter as Router } from 'react-router-dom';
+  import AppRoutes from './routes/AppRoutes';
+  import Navbar from './components/Navbar';
+  import { useLocation } from 'react-router-dom';
+  import { ToastContainer } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css'; // Import the toast styles!
+  import Footer from './components/Footer'; // Import Footer component
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+  const AppContent = () => {
+    const location = useLocation();
+  
+    // ✅ Check if route starts with "/admin"
+    const isAdminRoute = location.pathname.startsWith('/admin');
+  
+    return (
+      <>
+        {/* Only show Navbar/Footer if not in admin route */}
+        {!isAdminRoute && <Navbar />}
+        
+        <AppRoutes />
+  
+        <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
+  
+        {!isAdminRoute && <Footer />}
+      </>
+    );
+  };
+  
 
-export default App;
+  function App() {
+    return (
+      <Router>
+        <AppContent />
+      </Router>
+    );
+  }
+
+  export default App;
